@@ -1,0 +1,30 @@
+.keyword-badge {
+  padding: 3px 6px 2px 6px;
+  font-size: 75%;
+  color: white;
+  background-color: #b00;
+  border-radius: 6px;
+  box-shadow: 0 0 3px #ddd;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* ticket view */
+#ticket table.properties td[headers="h_keywords"] {
+  padding-top: 0.7em;
+  padding-bottom: 0.1em;
+}
+.keyword-badge.ticket {
+  margin-bottom: 1px;
+  vertical-align: top;
+  border: none;
+}
+
+/* report view */
+.keyword-badge.report {
+  vertical-align: top;
+}
+/* query view */
+.keyword-badge.query {
+  vertical-align: top;
+}
