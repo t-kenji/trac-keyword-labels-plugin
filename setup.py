@@ -48,7 +48,7 @@ setup(
 
     packages = find_packages(exclude=['*.tests*']),
     package_data = {
-        'avatar': [
+        'keyword_badges': [
             'htdocs/css/*.css',
         ],
     },
