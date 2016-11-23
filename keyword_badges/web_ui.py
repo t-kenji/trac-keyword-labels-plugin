@@ -125,7 +125,7 @@ class KeywordBadgesModule(Component):
                 ticket = reported_tickets.pop()
                 keywords = ticket['keywords'] or ''
                 context = web_context(req, ticket)
-                tag_ = self._query_link_words(context, 'keywords', keywords, class_, prepend=[tag.span('  ')])
+                tag_ = self._query_link_words(context, 'keywords', keywords, class_, prepend=[tag.span(' ')])
                 return itertools.chain(stream[0:5], tag_, stream[6:])
 
             xpath = '//table[@class="listing tickets"]/tbody/tr/td[@class="summary"]'
@@ -133,6 +133,8 @@ class KeywordBadgesModule(Component):
 
         add_stylesheet(req, 'keyword_badges/css/keyword_badges.css')
         return stream
+
+    # Inner methods
 
     def _query_link_words(self, context, name, value, class_, prepend=None, append=None):
         """Splits a list of words and makes a query link to each separately"""
