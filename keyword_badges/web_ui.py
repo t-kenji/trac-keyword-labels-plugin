@@ -35,7 +35,9 @@ import itertools
 from colorhash import ColorHash
 from pkg_resources import resource_filename
 
-from trac.config import Option
+from trac.config import (
+    ConfigSection, Option
+)
 from trac.core import *
 from trac.util.text import is_obfuscated
 from trac.web.api import (
@@ -57,6 +59,9 @@ class KeywordBadgesModule(Component):
 
     ticketlink_query = Option('query', 'ticketlink_query',
         default='?status=!closed')
+
+    keyword_badges_section = ConfigSection('keyword-badges',
+        """In this section, you can define custom badge colors.""")
 
     # IRequestFilter methods
 
@@ -150,18 +155,20 @@ class KeywordBadgesModule(Component):
             if i % 2:
                 items.append(' ')
             elif word:
-                rendered = Chrome(self.env).format_author(context, word) \
-                           if name == 'cc' else word
-                color = ColorHash(word.encode('utf-8'))
-                if not is_obfuscated(rendered):
-                    word_args = args.copy()
-                    word_args[name] = '~' + word
-                    items.append(tag.a(rendered,
-                                       style='background-color: {}'.format(color.hex),
-                                       class_=class_,
-                                       href=context.href.query(word_args)))
-                else:
-                    items.append(rendered)
+                backgroundColor = self.keyword_badges_section.get(word.lower())
+                fontColor = self.keyword_badges_section.get(word.lower() + '.font_color', 'white')
+                if not backgroundColor:
+                    backgroundColor = ColorHash(word.encode('utf-8')).hex
+                styles = {
+                    'backgroundColor': backgroundColor,
+                    'fontColor': fontColor,
+                }
+                word_args = args.copy()
+                word_args[name] = '~' + word
+                items.append(tag.a(word,
+                                   style='background-color: {backgroundColor}; color: {fontColor}'.format(**styles),
+                                   class_=class_,
+                                   href=context.href.query(word_args)))
         if append:
             items.extend(append)
         return tag(items)
