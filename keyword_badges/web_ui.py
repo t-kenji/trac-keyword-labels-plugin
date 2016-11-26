@@ -110,7 +110,6 @@ class KeywordBadgesModule(Component):
                 for row in data['tickets']:
                     try:
                         ticket = Ticket(self.env, row['id'])
-                        print('*** ticket: {} ***'.format(ticket))
                     except KeyError:
                         continue
                     else:
@@ -118,13 +117,14 @@ class KeywordBadgesModule(Component):
             elif 'row_groups' in data:
                 class_ = 'keyword-badge report'
 
-                for row in data['row_groups'][0][1]:
-                    try:
-                        ticket = Ticket(self.env, row['resource'].id)
-                    except KeyError:
-                        continue
-                    else:
-                        reported_tickets.insert(0, ticket)
+                for group in data['row_groups']:
+                    for row in group[1]:
+                        try:
+                            ticket = Ticket(self.env, row['resource'].id)
+                        except KeyError:
+                            continue
+                        else:
+                            reported_tickets.insert(0, ticket)
 
             def find_change(stream):
                 ticket = reported_tickets.pop()
