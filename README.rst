@@ -1,22 +1,22 @@
-Trac Keyword Badge Plugin
+Trac Keyword Labels Plugin
 ==========================
 
 Description
 -----------
 
-Keyword badge for Trac tickets.
+Keyword label for Trac tickets.
 
 Install
 -------
 
 Run the following command::
 
-    pip install trac-keyword-badge-plugin
+    pip install trac-keyword-labels-plugin
 
 Add the following to your trac conf::
 
     [components]
-    keyword_badge.* = enabled
+    keyword_labels.* = enabled
 
 Usage
 -----

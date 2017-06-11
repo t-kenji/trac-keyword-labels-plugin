@@ -32,13 +32,13 @@ from setuptools import find_packages, setup
 version = '0.0.1'
 
 setup(
-    name = 'TracKeywordBadgesPlugin',
+    name = 'TracKeywordLabelsPlugin',
     version = version,
     keywords = 'trac plugin keywords',
     author = 't-kenji',
     author_email = 'protect.2501@gmail.com',
-    url = 'https://github.com/t-kenji/trac-keyword-badges-plugin',
-    description = 'Keyword badge for Trac tickets',
+    url = 'https://github.com/t-kenji/trac-keyword-labels-plugin',
+    description = 'Keyword label for Trac tickets',
     license = 'BSD',
 
     install_requires = [
@@ -48,13 +48,13 @@ setup(
 
     packages = find_packages(exclude=['*.tests*']),
     package_data = {
-        'keyword_badges': [
+        'keyword_labels': [
             'htdocs/css/*.css',
         ],
     },
     entry_points = {
         'trac.plugins': [
-            'keyword_badges.web_ui = keyword_badges.web_ui',
+            'keyword_labels.web_ui = keyword_labels.web_ui',
         ]
     }
 )

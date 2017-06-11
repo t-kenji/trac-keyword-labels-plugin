@@ -51,7 +51,7 @@ from genshi.filters.transform import Transformer
 from genshi.builder import tag
 
 
-class KeywordBadgesModule(Component):
+class KeywordLabelsModule(Component):
 
     implements(IRequestFilter,
                ITemplateProvider,
@@ -60,8 +60,8 @@ class KeywordBadgesModule(Component):
     ticketlink_query = Option('query', 'ticketlink_query',
         default='?status=!closed')
 
-    keyword_badges_section = ConfigSection('keyword-badges',
-        """In this section, you can define custom badge colors.""")
+    keyword_labels_section = ConfigSection('keyword-labels',
+        """In this section, you can define custom label colors.""")
 
     # IRequestFilter methods
 
@@ -81,13 +81,13 @@ class KeywordBadgesModule(Component):
                                 self.env.is_component_enabled(QueryModule)):
                             break
                         context = web_context(req, ticket)
-                        field['rendered'] = self._query_link_words(context, 'keywords', keywords, 'keyword-badge ticket')
+                        field['rendered'] = self._query_link_words(context, 'keywords', keywords, 'keyword-label ticket')
         return template, data, content_type
 
     # ITemplateProvider methods
 
     def get_htdocs_dirs(self):
-        yield 'keyword_badges', resource_filename(__name__, 'htdocs')
+        yield 'keyword_labels', resource_filename(__name__, 'htdocs')
 
     def get_templates_dirs(self):
         return []
@@ -105,7 +105,7 @@ class KeywordBadgesModule(Component):
 
             reported_tickets = []
             if 'tickets' in data:
-                class_ = 'keyword-badge query'
+                class_ = 'keyword-label query'
 
                 for row in data['tickets']:
                     try:
@@ -115,7 +115,7 @@ class KeywordBadgesModule(Component):
                     else:
                         reported_tickets.insert(0, ticket)
             elif 'row_groups' in data:
-                class_ = 'keyword-badge report'
+                class_ = 'keyword-label report'
 
                 for group in data['row_groups']:
                     for row in group[1]:
@@ -136,7 +136,7 @@ class KeywordBadgesModule(Component):
             xpath = '//table[@class="listing tickets"]/tbody/tr/td[@class="summary"]'
             stream |= Transformer(xpath).filter(find_change)
 
-        add_stylesheet(req, 'keyword_badges/css/keyword_badges.css')
+        add_stylesheet(req, 'keyword_labels/css/keyword_labels.css')
         return stream
 
     # Inner methods
@@ -155,8 +155,8 @@ class KeywordBadgesModule(Component):
             if i % 2:
                 items.append(' ')
             elif word:
-                backgroundColor = self.keyword_badges_section.get(word.lower())
-                fontColor = self.keyword_badges_section.get(word.lower() + '.font_color', 'white')
+                backgroundColor = self.keyword_labels_section.get(word.lower())
+                fontColor = self.keyword_labels_section.get(word.lower() + '.font_color', 'white')
                 if not backgroundColor:
                     backgroundColor = ColorHash(word.encode('utf-8')).hex
                 styles = {
